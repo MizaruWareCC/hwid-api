@@ -14,7 +14,15 @@ conn.commit()
 print('Created table(if not exists) and commited')
 
 
+def generate_hash(string):
+    hashes = []
+    for letter in string:
+        sha512 = hashlib.sha512(bytes(letter, encoding='utf-8'))
+        hashes.append(sha512.hexdigest())
 
+    summ = ''
+    for hash in hashes:
+        summ += hash
 
 
 app = Flask(__name__)
@@ -34,14 +42,7 @@ def validation():
     This is being used to fight people using https debuggers to create dynamic, hwid-depended response.
     If you will use this, please change this method, because people knowing about this repository can use this method for auto-response.
     '''
-    hashes = []
-    for letter in hwid:
-        sha512 = hashlib.sha512(bytes(letter, encoding='utf-8'))
-        hashes.append(sha512.hexdigest())
-
-    summ = ''
-    for hash in hashes:
-        summ += hash
+    summ = generate_hash(hwid)
 
     genuser = hashlib.sha512(bytes(summ, encoding='utf-8')).hexdigest()
     cur = conn.cursor()
