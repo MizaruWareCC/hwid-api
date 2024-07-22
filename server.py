@@ -42,8 +42,6 @@ def validation():
         summ += hash
 
     genuser = hashlib.sha512(bytes(summ, encoding='utf-8')).hexdigest()
-    if not hwid:
-        return {'code': 400, 'message': 'Invalid Body'}
     cur = conn.cursor()
     cur.execute('SELECT * FROM hwids WHERE hwid = %s AND untill > %s', (hwid, datetime.datetime.utcnow()))
     vals = cur.fetchone()
