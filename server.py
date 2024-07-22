@@ -3,6 +3,8 @@ from flask import Flask
 import datetime
 from flask import request
 import hashlib
+from flask import Response
+
 
 conn = psycopg2.connect("")
 print('Connected')
@@ -71,7 +73,7 @@ def create():
     cur.execute('INSERT INTO hwids VALUES (%s, %s)', (hwid, untill))
     cur.close()
     conn.commit()
-    return {'code': 204}
+    return Response(status=204)
     
 
 app.run(debug=True)
